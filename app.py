@@ -8,97 +8,104 @@ import requests
 # 1. Configuración de página
 st.set_page_config(page_title="BapSync - Seguridad Escolar BAPES", page_icon="🛡️", layout="centered")
 
-# 2. Inyección CSS de Diseño Moderno Escolar
+# 2. Inyección CSS con alto contraste y fondo nítido
 st.markdown("""
     <style>
-    /* Fondo general con desenfoque suave temático escolar */
+    /* Fondo con imagen de colegio sutilmente oscurecida */
     .stApp {
-        background: linear-gradient(rgba(244, 247, 246, 0.92), rgba(232, 245, 233, 0.94)),
-                    url("https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1920&q=80");
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.55)),
+                    url("https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1920&q=80") no-repeat center center fixed;
         background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
     }
 
-    /* Ocultar elementos decorativos por defecto de Streamlit */
-    #MainMenu, footer {visibility: hidden;}
+    #MainMenu, footer, header {visibility: hidden;}
 
-    /* Contenedor principal estilo tarjeta */
+    /* Contenedor central como tarjeta blanca limpia */
     .block-container {
-        padding-top: 2rem;
-        padding-bottom: 3rem;
-        max-width: 720px;
+        max-width: 680px;
+        background: #ffffff;
+        padding: 30px 32px 40px 32px !important;
+        margin-top: 30px;
+        margin-bottom: 40px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
     }
 
-    /* Tarjetas flotantes estilo Glassmorphism */
-    .glass-card {
-        background: rgba(255, 255, 255, 0.95);
-        border: 1px solid rgba(226, 232, 240, 0.9);
-        border-radius: 16px;
-        padding: 22px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-        margin-bottom: 22px;
+    /* Tipografías y colores con alto contraste */
+    h1, h2, h3, h4, p, span, label, div {
+        color: #1e293b !important;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
 
     /* Banner institucional superior */
     .header-banner {
-        background: linear-gradient(135deg, #0c5c3c, #15803d);
+        background: linear-gradient(135deg, #0c5c3c, #166534);
         border-radius: 14px;
-        padding: 16px;
-        color: white;
+        padding: 16px 20px;
         text-align: center;
-        box-shadow: 0 4px 14px rgba(12, 92, 60, 0.25);
-        margin-bottom: 20px;
+        margin-top: 10px;
+        margin-bottom: 22px;
+        box-shadow: 0 4px 12px rgba(12, 92, 60, 0.2);
     }
     .header-banner h4 {
+        color: #ffffff !important;
         margin: 0;
-        font-weight: 700;
+        font-weight: 800;
         letter-spacing: 0.5px;
+        font-size: 19px;
     }
     .header-banner p {
+        color: #e2e8f0 !important;
         margin: 6px 0 0 0;
         font-size: 13.5px;
-        opacity: 0.95;
     }
 
     /* Botón de acción principal */
     .stButton>button {
         width: 100%;
-        background: linear-gradient(135deg, #0c5c3c, #166534);
-        color: white !important;
-        font-weight: 600;
-        border-radius: 12px;
-        padding: 14px;
-        font-size: 16px;
-        border: none;
-        box-shadow: 0 6px 16px rgba(12, 92, 60, 0.22);
-        transition: all 0.25s ease-in-out;
+        background: linear-gradient(135deg, #0c5c3c, #15803d) !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        border-radius: 12px !important;
+        padding: 14px 20px !important;
+        font-size: 16px !important;
+        border: none !important;
+        box-shadow: 0 4px 14px rgba(12, 92, 60, 0.3) !important;
+        transition: all 0.2s ease;
     }
     .stButton>button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(12, 92, 60, 0.35);
-        background: linear-gradient(135deg, #08432b, #14532d);
+        box-shadow: 0 6px 20px rgba(12, 92, 60, 0.4) !important;
+        background: #08432b !important;
     }
 
-    /* Tarjetas de recordatorios administrativos */
-    .card-recordatorio {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-left: 5px solid #22c55e;
-        padding: 14px;
-        border-radius: 10px;
-        margin-bottom: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-    }
-
-    /* Pestañas modernas */
+    /* Estilo de pestañas */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
+        background-color: #f1f5f9;
+        padding: 5px;
+        border-radius: 12px;
+        gap: 6px;
     }
     .stTabs [data-baseweb="tab"] {
-        border-radius: 8px 8px 0 0;
+        border-radius: 8px;
         padding: 8px 16px;
-        background: rgba(255, 255, 255, 0.6);
+        font-weight: 600;
+        border: none !important;
+        background-color: transparent;
+    }
+    .stTabs [aria-selected="true"] {
+        background-color: #ffffff !important;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    /* Tarjetas de avisos de WhatsApp */
+    .card-recordatorio {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-left: 5px solid #22c55e;
+        padding: 14px 16px;
+        border-radius: 10px;
+        margin-bottom: 12px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -148,8 +155,8 @@ def generar_enlace_google_calendar(fecha_str, turno, padre, estudiante):
     }
     return f"https://calendar.google.com/calendar/render?{urllib.parse.urlencode(params)}"
 
-# Logo principal
-col_izq, col_centro, col_der = st.columns([1, 3, 1])
+# Logo institucional centrado
+col_izq, col_centro, col_der = st.columns([1, 2.5, 1])
 with col_centro:
     try:
         st.image("logo_bapsync.png", use_container_width=True)
@@ -166,7 +173,7 @@ mes_actual_nombre = meses_nombres[hoy.month - 1]
 total_dias_mes = calendar.monthrange(hoy.year, hoy.month)[1]
 fecha_hoy_str = hoy.strftime("%Y-%m-%d")
 
-# Banner descriptivo institucional
+# Banner institucional superior
 st.markdown(f"""
     <div class='header-banner'>
         <h4>SEGURIDAD ESCOLAR BAPES</h4>
@@ -194,7 +201,7 @@ tab_registro, tab_horario, tab_notif = st.tabs(["📝 Inscribirme", "📅 Rol Me
 
 # --- TAB 1: INSCRIPCIÓN ---
 with tab_registro:
-    st.markdown("### Selecciona tu fecha de apoyo")
+    st.markdown("#### 1. Selecciona fecha y horario")
     dia_elegido_label = st.selectbox("Día de asistencia (Lunes a Viernes):", list(dias_mes_dict.keys()))
     info_dia = dias_mes_dict[dia_elegido_label]
     
@@ -215,18 +222,20 @@ with tab_registro:
     libres = 5 - ocupados
 
     if libres > 0:
-        st.info(f"🟢 **{libres} de 5 cupos libres** para el {dia_elegido_label}")
+        st.success(f"🟢 **{libres} de 5 cupos disponibles** para el {dia_elegido_label}")
     else:
-        st.error("🔴 **Turno completo (5/5).** Por favor selecciona otra fecha o turno.")
+        st.error("🔴 **Turno completo (5/5).** Selecciona otra fecha o turno.")
 
     st.markdown("---")
-    st.markdown("### Datos del Apoderado")
+    st.markdown("#### 2. Datos del Apoderado")
     nombre_padre = st.text_input("Nombres y Apellidos del Apoderado:")
     telefono_padre = st.text_input("Celular / WhatsApp (9 dígitos):", max_chars=9)
     estudiante = st.text_input("Nombre completo del Estudiante:")
     grado = st.text_input("Grado y Sección (Ej: 3ro B Primaria):")
 
-    if st.button("Confirmar mi Asistencia en BAPES"):
+    st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
+
+    if st.button("Confirmar mi Turno en BAPES"):
         if not (nombre_padre and telefono_padre and estudiante and grado):
             st.warning("⚠️ Todos los campos son obligatorios para validar el registro.")
         elif libres <= 0:
@@ -248,7 +257,7 @@ with tab_registro:
             try:
                 r = requests.post(API_URL, json=payload, timeout=15, allow_redirects=True)
                 if r.status_code in [200, 302] or "ok" in r.text.lower():
-                    st.success("🎉 ¡Tu turno fue registrado exitosamente en el rol escolar!")
+                    st.success("🎉 ¡Tu turno ha sido registrado correctamente!")
                     
                     url_calendar = generar_enlace_google_calendar(
                         info_dia["fecha_str"], turno_elegido, nombre_padre, estudiante
@@ -260,13 +269,13 @@ with tab_registro:
                     col_b1, col_b2 = st.columns(2)
                     with col_b1:
                         st.markdown(f"""
-                            <a href='{url_calendar}' target='_blank' style='display:block; text-align:center; background-color:#1a73e8; color:white; padding:12px; border-radius:10px; text-decoration:none; font-weight:600;'>
+                            <a href='{url_calendar}' target='_blank' style='display:block; text-align:center; background-color:#1a73e8; color:white !important; padding:12px; border-radius:10px; text-decoration:none; font-weight:700;'>
                                 📅 Google Calendar
                             </a>
                         """, unsafe_allow_html=True)
                     with col_b2:
                         st.markdown(f"""
-                            <a href='{url_whatsapp}' target='_blank' style='display:block; text-align:center; background-color:#25D366; color:white; padding:12px; border-radius:10px; text-decoration:none; font-weight:600;'>
+                            <a href='{url_whatsapp}' target='_blank' style='display:block; text-align:center; background-color:#25D366; color:white !important; padding:12px; border-radius:10px; text-decoration:none; font-weight:700;'>
                                 📲 WhatsApp
                             </a>
                         """, unsafe_allow_html=True)
@@ -277,7 +286,7 @@ with tab_registro:
 
 # --- TAB 2: ROL MENSUAL ---
 with tab_horario:
-    st.markdown(f"### 📋 Rol General de Apoderados ({mes_actual_nombre} {hoy.year})")
+    st.markdown(f"#### 📋 Rol de Vigilancia ({mes_actual_nombre} {hoy.year})")
     if st.button("🔄 Actualizar Tabla"):
         st.rerun()
 
@@ -310,20 +319,20 @@ with tab_horario:
 
 # --- TAB 3: ACCESO ADMINISTRATIVO ---
 with tab_notif:
-    st.markdown("### 🔒 Panel Exclusivo de Coordinación")
-    pin = st.text_input("Ingrese la clave administrativa institucional:", type="password")
+    st.markdown("#### 🔒 Panel Exclusivo de Coordinación")
+    pin = st.text_input("Ingrese la clave institucional:", type="password")
 
     if pin:
         if pin == ADMIN_PIN:
-            st.success("Acceso autorizado.")
-            st.markdown(f"#### 🔔 Turnos Programados para Hoy ({hoy.strftime('%d/%m/%Y')})")
+            st.success("Acceso administrativo autorizado.")
+            st.markdown(f"##### 🔔 Turnos de Hoy ({hoy.strftime('%d/%m/%Y')})")
             
             if not df_turnos.empty and "fecha" in df_turnos.columns:
                 df_turnos["fecha_corta"] = df_turnos["fecha"].astype(str).str.strip().str[:10]
                 padres_hoy = df_turnos[df_turnos["fecha_corta"] == fecha_hoy_str]
 
                 if not padres_hoy.empty:
-                    st.write(f"Total asignados para el día: **{len(padres_hoy)} apoderado(s)**")
+                    st.write(f"Total para hoy: **{len(padres_hoy)} apoderado(s)**")
                     for _, fila in padres_hoy.iterrows():
                         padre_nom = fila.get("padre", "Apoderado")
                         turno_nom = fila.get("turno", "Turno")
@@ -332,15 +341,15 @@ with tab_notif:
 
                         msg_hoy = (
                             f"Estimado/a {padre_nom}, le recordamos su turno de vigilancia BAPES hoy ({turno_nom}), "
-                            f"resguardando el ingreso/salida de su menor hijo/a {est}. ¡Agradecemos su puntualidad!"
+                            f"resguardando la seguridad de su hijo/a {est}. ¡Agradecemos su puntualidad!"
                         )
                         url_aviso = f"https://wa.me/51{tel}?text={urllib.parse.quote(msg_hoy)}"
 
                         st.markdown(f"""
                             <div class='card-recordatorio'>
-                                <b>👤 {padre_nom}</b> — <i>{turno_nom}</i><br>
-                                Estudiante: {est} | Celular: {tel}<br><br>
-                                <a href='{url_aviso}' target='_blank' style='background-color:#25D366; color:white; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:600; font-size:13.5px; display:inline-block;'>
+                                <b style='color:#0f172a;'>👤 {padre_nom}</b> — <i>{turno_nom}</i><br>
+                                <span style='font-size:13.5px; color:#475569;'>Estudiante: {est} | Celular: {tel}</span><br><br>
+                                <a href='{url_aviso}' target='_blank' style='background-color:#25D366; color:white !important; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:700; font-size:13.5px; display:inline-block;'>
                                     📲 Enviar Recordatorio WhatsApp
                                 </a>
                             </div>
