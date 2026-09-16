@@ -54,7 +54,9 @@ def cargar_turnos():
     if not API_URL:
         return pd.DataFrame()
     try:
-        res = requests.get(API_URL, timeout=12, allow_redirects=True)
+        # Añade un parámetro temporal para evitar que el navegador o Streamlit lean datos antiguos en caché
+        url_fresca = f"{API_URL}?t={datetime.now().timestamp()}"
+        res = requests.get(url_fresca, timeout=12, allow_redirects=True)
         if res.status_code == 200:
             datos = res.json()
             if isinstance(datos, list) and len(datos) > 0:
@@ -175,20 +177,21 @@ with tab_registro:
             st.error("Falta configurar la URL de la base de datos en Secrets.")
         else:
             payload = {
-                "fecha": info_dia["fecha_str"],
-                "dia": info_dia["dia"],
-                "turno": turno_elegido,
-                "padre": nombre_padre.strip(),
-                "telefono": telefono_padre.strip(),
-                "estudiante": estudiante.strip(),
-                "grado": grado.strip(),
+                "fecha": str(info_dia["fecha_str"]),
+                "dia": str(info_dia["dia"]),
+                "turno": str(turno_elegido),
+                "padre": str(nombre_padre).strip(),
+                "telefono": str(telefono_padre).strip(),
+                "estudiante": str(estudiante).strip(),
+                "grado": str(grado).strip(),
                 "creado": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }
             
             try:
+                # Envío directo con seguimiento de redirección (HTTP 302 a 200)
                 r = requests.post(API_URL, json=payload, timeout=15, allow_redirects=True)
                 
-                if r.status_code in [200, 302] or "ok" in r.text:
+                if r.status_code in [200, 302] or "ok" in r.text.lower():
                     st.success("🎉 ¡Tu turno ha sido registrado correctamente!")
                     
                     url_calendar = generar_enlace_google_calendar(
@@ -212,9 +215,9 @@ with tab_registro:
                             </a>
                         """, unsafe_allow_html=True)
                     
-                    st.caption("💡 Al presionar **Guardar en Google Calendar**, tu teléfono te notificará automáticamente 24 horas y 1 hora antes de tu turno.")
+                    st.caption("💡 Al presionar **Guardar en Google Calendar**, tu teléfono te notificará automáticamente.")
                 else:
-                    st.error(f"Error al guardar: Código {r.status_code}")
+                    st.error(f"Error en respuesta del servidor: Código {r.status_code}")
             except Exception as ex:
                 st.error(f"Error de conexión: {ex}")
 
