@@ -144,7 +144,7 @@ def generar_enlace_google_calendar(fecha_str, turno, padre, estudiante):
         "text": titulo,
         "dates": f"{start_time}/{end_time}",
         "details": detalles,
-        "location": border_ubicacion := ubicacion
+        "location": ubicacion
     }
     return f"https://calendar.google.com/calendar/render?{urllib.parse.urlencode(params)}"
 
